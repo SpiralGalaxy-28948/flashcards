@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#123e42" />
+    <title>Geiriau | Cymraeg flashcards</title>
+    <link rel="preconnect" href="https://images.unsplash.com" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <img
+        class="background-image"
+        src="https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=1600&q=85"
+        srcset="
+          https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=800&q=80 800w,
+          https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=1600&q=85 1600w,
+          https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=2400&q=85 2400w
+        "
+        sizes="100vw"
+        width="2400"
+        height="1600"
+        alt=""
+        fetchpriority="high"
+      />
+      <div class="image-wash" aria-hidden="true"></div>
+
+      <section class="workspace" aria-labelledby="page-title">
+        <header class="topbar">
+          <a class="brand" href="./" aria-label="Geiriau home">
+            <span class="brand-mark">G</span>
+            <span>
+              <strong>Geiriau</strong>
+            </span>
+          </a>
+          <div class="progress-pill" aria-live="polite">
+            <span class="progress-dot"></span>
+            <span id="progress-label">Ready to practise</span>
+          </div>
+        </header>
+
+        <div class="content">
+          <div class="intro">
+            <p class="eyebrow">A pocket-sized language helper</p>
+            <h1 id="page-title">Find the word.</h1>
+            <p class="intro-copy">Let a small deck of Cymraeg words settle into memory, one curious reveal at a time.</p>
+          </div>
+
+          <div class="practice-panel">
+            <div class="mode-row">
+              <div>
+                <span class="control-label">Prompt direction</span>
+                <div class="segmented-control" role="group" aria-label="Prompt direction">
+                  <button class="mode-button is-active" type="button" data-mode="english">English <span>to Cymraeg</span></button>
+                  <button class="mode-button" type="button" data-mode="welsh">Cymraeg <span>to English</span></button>
+                  <button class="mode-button" type="button" data-mode="random">Random <span>direction</span></button>
+                </div>
+              </div>
+              <label class="toggle-control">
+                <input id="plural-toggle" type="checkbox" disabled />
+                <span class="toggle-track" aria-hidden="true"><span class="toggle-thumb"></span></span>
+                <span><strong>Include plurals</strong><small>Cymraeg to English only</small></span>
+              </label>
+            </div>
+
+            <button class="flashcard" id="flashcard" type="button" aria-label="Reveal answer" disabled>
+              <span class="card-face" id="card-face">
+                <span class="card-kicker" id="card-kicker">Loading your deck</span>
+                <strong class="card-word" id="card-word">Preparing...</strong>
+                <span class="card-hint" id="card-hint">Click to reveal</span>
+              </span>
+            </button>
+            <p class="card-instruction" id="card-instruction">Click the card to reveal the translation</p>
+          </div>
+        </div>
+
+        <footer class="footer-note">
+          <span id="deck-count">Loading vocabulary...</span>
+          <span class="footer-separator" aria-hidden="true">/</span>
+          <span>Pages 337–349</span>
+        </footer>
+      </section>
+    </main>
+    <script src="app.js" defer></script>
+  </body>
+</html>
