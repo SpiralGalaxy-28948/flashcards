@@ -78,7 +78,7 @@ for raw in lines:
     if re.fullmatch(r'\d+', left):
         continue
 
-    record = (left, meaning, f'({pos})' if pos else '', plural)
+    record = (left, meaning, f'({pos})' if pos else '', plural, 'M')
     if record not in seen:
         seen.add(record)
         records.append(record)
@@ -86,7 +86,7 @@ for raw in lines:
 out = Path('welsh_vocab_337_349.csv')
 with out.open('w', newline='', encoding='utf-8') as f:
     writer = csv.writer(f)
-    writer.writerow(['Welsh word', 'English meaning', 'Part of speech', 'Plural'])
+    writer.writerow(['Welsh word', 'English meaning', 'Part of speech', 'Plural', 'Source'])
     writer.writerows(records)
 
 print(f'Wrote {len(records)} rows to {out.resolve()}')

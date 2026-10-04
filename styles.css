@@ -50,6 +50,10 @@ h1 { margin: 0; font-family: 'Fraunces', serif; font-size: clamp(48px, 6vw, 84px
 .mode-button { border: 0; border-radius: 7px; padding: 9px 12px; color: rgba(249,245,237,.67); background: transparent; cursor: pointer; font-size: 11px; font-weight: 600; transition: background .2s, color .2s; }
 .mode-button span { display: block; color: inherit; font-size: 10px; font-weight: 400; opacity: .72; }
 .mode-button.is-active { color: var(--ink); background: var(--paper); box-shadow: 0 3px 12px rgba(0,0,0,.1); }
+.scope-control { display: flex; flex: 0 0 142px; flex-direction: column; }
+.scope-select { height: 42px; padding: 0 30px 0 12px; border: 1px solid rgba(255,255,255,.2); border-radius: 9px; color: #f9f5ed; background: rgba(9,37,38,.5); font: inherit; font-size: 11px; cursor: pointer; }
+.scope-select:focus-visible { outline: 2px solid #f3a587; outline-offset: 3px; }
+.scope-select option { color: var(--ink); background: var(--paper); }
 .toggle-control { display: flex; align-items: center; gap: 9px; min-width: 138px; color: #f9f5ed; cursor: pointer; }
 .toggle-control:has(input:disabled) { cursor: not-allowed; opacity: .45; }
 .toggle-control input { position: absolute; opacity: 0; pointer-events: none; }
@@ -96,6 +100,7 @@ h1 { margin: 0; font-family: 'Fraunces', serif; font-size: clamp(48px, 6vw, 84px
   h1 { font-size: clamp(46px, 16vw, 68px); }
   .intro-copy { display: none; }
   .mode-row { align-items: stretch; flex-direction: column; gap: 16px; }
+  .scope-control { flex-basis: auto; }
   .segmented-control { width: 100%; }
   .mode-button { flex: 1; padding-inline: 5px; }
   .toggle-control { align-self: flex-start; }

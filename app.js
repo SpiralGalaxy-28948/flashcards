@@ -1,6 +1,7 @@
 const state = {
   entries: [],
   mode: 'english',
+  source: 'all',
   includePlurals: false,
   current: null,
   revealed: false,
@@ -15,6 +16,7 @@ const elements = {
   instruction: document.querySelector('#card-instruction'),
   progress: document.querySelector('#progress-label'),
   deckCount: document.querySelector('#deck-count'),
+  sourceFilter: document.querySelector('#source-filter'),
   pluralToggle: document.querySelector('#plural-toggle'),
 };
 
@@ -39,14 +41,38 @@ function parseCsv(text) {
     cell += character;
   }
   if (cell || row.length) { row.push(cell.trim()); rows.push(row); }
-  return rows.slice(1).map(([welsh, english, partOfSpeech, plural]) => ({ welsh, english, partOfSpeech, plural })).filter((entry) => entry.welsh && entry.english);
+  return rows.slice(1).map(([welsh, english, partOfSpeech, plural, source]) => ({ welsh, english, partOfSpeech, plural, source: source || 'M' })).filter((entry) => entry.welsh && entry.english);
 }
 
 function randomItem(items) { return items[Math.floor(Math.random() * items.length)]; }
 
+function getScopedEntries() {
+  return state.source === 'all' ? state.entries : state.entries.filter((entry) => entry.source === state.source);
+}
+
+function updateDeckCount() {
+  elements.deckCount.textContent = `${getScopedEntries().length} words in this deck`;
+}
+
+function populateSourceFilter() {
+  const sources = [...new Set(state.entries.map((entry) => entry.source))].sort((left, right) => {
+    if (left === 'M') return -1;
+    if (right === 'M') return 1;
+    if (/^\d+$/.test(left) && /^\d+$/.test(right)) return Number(left) - Number(right);
+    return left.localeCompare(right, undefined, { numeric: true });
+  });
+
+  sources.forEach((source) => {
+    const option = document.createElement('option');
+    option.value = source;
+    option.textContent = source === 'M' ? 'Mynediad' : (/^\d+$/.test(source) ? `Unit ${source}` : source);
+    elements.sourceFilter.append(option);
+  });
+}
+
 function getCards() {
   const cards = [];
-  state.entries.forEach((entry) => {
+  getScopedEntries().forEach((entry) => {
     const direction = state.mode === 'random' ? (Math.random() > .5 ? 'english' : 'welsh') : state.mode;
     cards.push({ entry, direction, prompt: direction === 'english' ? entry.english : entry.welsh });
     if (state.mode === 'welsh' && state.includePlurals && entry.plural) {
@@ -86,6 +112,12 @@ function handleCardClick() {
   else { state.revealed = true; renderCard(); }
 }
 
+elements.sourceFilter.addEventListener('change', () => {
+  state.source = elements.sourceFilter.value;
+  updateDeckCount();
+  nextCard();
+});
+
 document.querySelectorAll('.mode-button').forEach((button) => {
   button.addEventListener('click', () => {
     state.mode = button.dataset.mode;
@@ -113,7 +145,8 @@ fetch('welsh_vocab_337_349.csv')
   .then((response) => { if (!response.ok) throw new Error('Vocabulary could not be loaded'); return response.text(); })
   .then((text) => {
     state.entries = parseCsv(text);
-    elements.deckCount.textContent = `${state.entries.length} words in this deck`;
+    populateSourceFilter();
+    updateDeckCount();
     elements.card.disabled = false;
     nextCard();
   })
