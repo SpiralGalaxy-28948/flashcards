@@ -5,6 +5,12 @@ const state = {
   includePlurals: false,
   current: null,
   revealed: false,
+  baseCards: [],
+  pluralCards: [],
+  activeCards: [],
+  cardIndex: 0,
+  phase: 'words',
+  round: 0,
 };
 
 const elements = {
@@ -41,10 +47,22 @@ function parseCsv(text) {
     cell += character;
   }
   if (cell || row.length) { row.push(cell.trim()); rows.push(row); }
-  return rows.slice(1).map(([welsh, english, partOfSpeech, plural, source]) => ({ welsh, english, partOfSpeech, plural, source: source || 'M' })).filter((entry) => entry.welsh && entry.english);
+  return rows.slice(1).map(([welsh, english, partOfSpeech, plural, source], index) => ({ id: index, welsh, english, partOfSpeech, plural, source: source || 'M' })).filter((entry) => entry.welsh && entry.english);
 }
 
-function randomItem(items) { return items[Math.floor(Math.random() * items.length)]; }
+function shuffleCards(cards, previousEntryId = null) {
+  const shuffled = [...cards];
+  for (let index = shuffled.length - 1; index > 0; index -= 1) {
+    const swapIndex = Math.floor(Math.random() * (index + 1));
+    [shuffled[index], shuffled[swapIndex]] = [shuffled[swapIndex], shuffled[index]];
+  }
+
+  if (shuffled.length > 1 && shuffled[0].entry.id === previousEntryId) {
+    const replacementIndex = shuffled.findIndex((card, index) => index > 0 && card.entry.id !== previousEntryId);
+    if (replacementIndex > 0) [shuffled[0], shuffled[replacementIndex]] = [shuffled[replacementIndex], shuffled[0]];
+  }
+  return shuffled;
+}
 
 function getScopedEntries() {
   return state.source === 'all' ? state.entries : state.entries.filter((entry) => entry.source === state.source);
@@ -70,22 +88,52 @@ function populateSourceFilter() {
   });
 }
 
-function getCards() {
-  const cards = [];
-  getScopedEntries().forEach((entry) => {
+function createRound(previousEntryId = null) {
+  const entries = getScopedEntries();
+  state.baseCards = entries.map((entry) => {
     const direction = state.mode === 'random' ? (Math.random() > .5 ? 'english' : 'welsh') : state.mode;
-    cards.push({ entry, direction, prompt: direction === 'english' ? entry.english : entry.welsh });
-    if (state.mode === 'welsh' && state.includePlurals && entry.plural) {
-      cards.push({ entry, direction: 'welsh', prompt: entry.plural, isPlural: true });
-    }
+    return { entry, direction, prompt: direction === 'english' ? entry.english : entry.welsh };
   });
-  return cards;
+
+  state.pluralCards = state.mode === 'welsh' && state.includePlurals
+    ? entries.filter((entry) => entry.plural).map((entry) => ({ entry, direction: 'welsh', prompt: entry.plural, isPlural: true }))
+    : [];
+  state.activeCards = shuffleCards(state.baseCards, previousEntryId);
+  state.cardIndex = 0;
+  state.phase = 'words';
+  state.round += 1;
 }
 
-function nextCard() {
-  const cards = getCards();
-  if (!cards.length) return;
-  state.current = randomItem(cards);
+function resetSession() {
+  state.current = null;
+  state.revealed = false;
+  state.round = 0;
+  createRound();
+  showNextCard();
+}
+
+function sessionProgress() {
+  if (state.phase === 'plurals') {
+    return `Plural ${state.cardIndex} of ${state.activeCards.length}`;
+  }
+  return `Round ${state.round} · Word ${state.cardIndex} of ${state.baseCards.length}`;
+}
+
+function showNextCard() {
+  if (!state.activeCards.length) return;
+  if (state.cardIndex >= state.activeCards.length) {
+    if (state.phase === 'words' && state.pluralCards.length) {
+      const previousEntryId = state.current?.entry.id;
+      state.activeCards = shuffleCards(state.pluralCards, previousEntryId);
+      state.cardIndex = 0;
+      state.phase = 'plurals';
+    } else {
+      createRound(state.current?.entry.id);
+    }
+  }
+
+  state.current = state.activeCards[state.cardIndex];
+  state.cardIndex += 1;
   state.revealed = false;
   renderCard();
 }
@@ -103,34 +151,35 @@ function renderCard() {
   elements.hint.textContent = state.revealed ? (card.isPlural ? 'Plural form' : 'Click for the next card') : 'Click to reveal';
   elements.card.setAttribute('aria-label', state.revealed ? `Translation: ${answer}. Click for the next card.` : 'Reveal answer');
   elements.instruction.textContent = state.revealed ? 'Click again for a new challenge' : 'Click the card to reveal the translation';
-  elements.progress.textContent = state.revealed ? 'Answer revealed' : 'Challenge in progress';
+  elements.progress.textContent = sessionProgress();
 }
 
 function handleCardClick() {
   if (!state.current) return;
-  if (state.revealed) nextCard();
+  if (state.revealed) showNextCard();
   else { state.revealed = true; renderCard(); }
 }
 
 elements.sourceFilter.addEventListener('change', () => {
   state.source = elements.sourceFilter.value;
   updateDeckCount();
-  nextCard();
+  resetSession();
 });
 
 document.querySelectorAll('.mode-button').forEach((button) => {
   button.addEventListener('click', () => {
+    if (state.mode === button.dataset.mode) return;
     state.mode = button.dataset.mode;
     document.querySelectorAll('.mode-button').forEach((item) => item.classList.toggle('is-active', item === button));
     elements.pluralToggle.disabled = state.mode !== 'welsh';
     state.includePlurals = elements.pluralToggle.checked && state.mode === 'welsh';
-    nextCard();
+    resetSession();
   });
 });
 
 elements.pluralToggle.addEventListener('change', () => {
   state.includePlurals = elements.pluralToggle.checked;
-  nextCard();
+  resetSession();
 });
 elements.card.addEventListener('click', handleCardClick);
 
@@ -148,7 +197,7 @@ fetch('welsh_vocab_337_349.csv')
     populateSourceFilter();
     updateDeckCount();
     elements.card.disabled = false;
-    nextCard();
+    resetSession();
   })
   .catch(() => {
     elements.kicker.textContent = 'Deck unavailable';
