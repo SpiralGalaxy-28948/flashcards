@@ -1025,24 +1025,24 @@ tramor,abroad,Phrase / Other (Ymadrodd / Arall),,3
 tybed?,I wonder?,Phrase / Other (Ymadrodd / Arall),,3
 ardal,area(s),Noun (Enw),ardaloedd,Uned 4
 cof,memory,Noun (Enw),,Uned 4
-cydweithwraig,colleague,Noun (Enw),,Uned 4
-elusen,charity (-ies),Noun (Enw),elusennau,Uned 4
-lleuad,moon,Noun (Enw),,Uned 4
-potel,bottle(s),Noun (Enw),poteli,Uned 4
-sesiwn,session(s),Noun (Enw),sesiynau,Uned 4
-trafferth,trouble(s),Noun (Enw),trafferthion,Uned 4
 cydweithiwr,colleague(s),Noun (Enw),cydweithwyr,Uned 4
+cydweithwraig,female colleague,Noun (Enw),,Uned 4
 cyfle,chance(s) / opportunity (-ies),Noun (Enw),cyfleoedd,Uned 4
 cynnig,offer(s),Noun (Enw),cynigion,Uned 4
+elusen,charity (-ies),Noun (Enw),elusennau,Uned 4
 hamdden,leisure,Noun (Enw),,Uned 4
+lleuad,moon,Noun (Enw),,Uned 4
 math,type(s) / kind(s),Noun (Enw),mathau,Uned 4
 oedolyn,adult(s),Noun (Enw),oedolion,Uned 4
+potel,bottle(s),Noun (Enw),poteli,Uned 4
 pwrs,purse(s),Noun (Enw),pyrsiau,Uned 4
 pwynt,point(s),Noun (Enw),pwyntiau,Uned 4
-pwys,pound(s) (not money),Noun (Enw),pwysau/i,Uned 4
+pwys,pound(s) (weight/measurement),Noun (Enw),pwysau/i,Uned 4
 pwysau,weight / weights,Noun (Enw),,Uned 4
 pythefnos,fortnight,Noun (Enw),,Uned 4
 reis,rice,Noun (Enw),,Uned 4
+sesiwn,session(s),Noun (Enw),sesiynau,Uned 4
+trafferth,trouble(s),Noun (Enw),trafferthion,Uned 4
 twpsyn,silly person,Noun (Enw),,Uned 4
 achub,"to save, to rescue",Verb (Berf),,Uned 4
 cofrestru,to enrol,Verb (Berf),,Uned 4
@@ -1050,3 +1050,36 @@ crio,to cry,Verb (Berf),,Uned 4
 dotio (ar),to love (something),Verb (Berf),,Uned 4
 llosgi,to burn,Verb (Berf),,Uned 4
 papuro,to paper,Verb (Berf),,Uned 4
+pasio,to pass,Verb (Berf),,Uned 4
+suddo,to sink,Verb (Berf),,Uned 4
+syrthio,to fall,Verb (Berf),,Uned 4
+torheulo,to sunbathe,Verb (Berf),,Uned 4
+addas,suitable,Adjective (Ansoddair),,Uned 4
+clasurol,classical,Adjective (Ansoddair),,Uned 4
+cyfoethog,rich,Adjective (Ansoddair),,Uned 4
+distaw,quiet,Adjective (Ansoddair),,Uned 4
+gwirfoddol,voluntary,Adjective (Ansoddair),,Uned 4
+iach,healthy,Adjective (Ansoddair),,Uned 4
+preswyl,residential,Adjective (Ansoddair),,Uned 4
+sbeislyd,spicy,Adjective (Ansoddair),,Uned 4
+unig,only; lonely,Adjective (Ansoddair),,Uned 4
+acen,accent(s),Noun (Enw),acenion,Uned 5
+canrif,century (-ies),Noun (Enw),canrifoedd,Uned 5
+dinas,city (-ies),Noun (Enw),dinasoedd,Uned 5
+llysfam,stepmother(s),Noun (Enw),llysfamau,Uned 5
+merch,daughter(s),Noun (Enw),merched,Uned 5
+oes,age(s),Noun (Enw),oesoedd,Uned 5
+wyres,granddaughter(s),Noun (Enw),wyresau,Uned 5
+ysgol gyfun,comprehensive school,Noun (Enw),,Uned 5
+ysgol gynradd,primary school,Noun (Enw),,Uned 5
+ysgol uwchradd,secondary school,Noun (Enw),,Uned 5
+llystad,stepfather(s),Noun (Enw),llystadau,Uned 5
+rhiant,parent(s),Noun (Enw),rhieni,Uned 5
+ŵyr,grandson(s) / grandchild(ren),Noun (Enw),wyrion,Uned 5
+ysgariad,divorce(s),Noun (Enw),ysgariadau,Uned 5
+geni,to be born,Verb (Berf),,Uned 5
+magu,to bring up,Verb (Berf),,Uned 5
+anhygoel,amazing,Adjective (Ansoddair),,Uned 5
+cyffredin,common; general,Adjective (Ansoddair),,Uned 5
+gwahanol,different,Adjective (Ansoddair),,Uned 5
+beth bynnag,anyway,Phrase / Other (Ymadrodd / Arall),,Uned 5
